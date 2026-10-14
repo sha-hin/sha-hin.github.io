@@ -209,7 +209,11 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
 .chip.lab{background:var(--lab-soft);color:var(--lab)}
 .chip.side{background:var(--accent-soft);color:var(--accent)}
 .chip.wip{background:var(--warn-soft);color:var(--warn)}
-.ai-main{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:linear-gradient(180deg,var(--accent-soft),var(--surface) 140px)}
+.engine{display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:10px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));background:linear-gradient(180deg,var(--accent-soft),var(--surface) 120px)}
+.engine-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.engine h4{margin:0;font-family:var(--display);font-size:19px;font-weight:700;line-height:1.3}
+.engine p{margin:0;color:var(--muted);max-width:none}
+@media (max-width:600px){ .engine{padding:16px} }
 .flow{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;counter-reset:none}
 .flow li{position:relative;display:flex;flex-direction:column;gap:3px;padding:12px;border-radius:8px;background:var(--surface);border:1px solid var(--line);min-width:0}
 .flow li + li::before{content:"";position:absolute;left:-10px;top:50%;width:10px;height:2px;background:var(--accent)}
@@ -287,28 +291,6 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
     </figure>
   </section>
 
-  <section id="ai" aria-labelledby="ai-h">
-    <div class="head"><h2 id="ai-h">AI work</h2><span class="eyebrow">models · pipelines</span></div>
-
-    <article class="feature ai-main">
-      <div class="meta"><span>Opinoma</span><span>LLM report engine</span><span class="chip design">Architecture designed</span></div>
-      <h3>Turning 100K+ student evaluations into written reports</h3>
-      <p>Schools generate a huge volume of evaluation feedback in Danish and English. I designed a pipeline that turns it into written reports per evaluation, teacher, school and comparison, <b>self-hosted on open models</b> so student data stays private.</p>
-      <ol class="flow" aria-label="Pipeline stages">
-        <li><span class="k">01</span><b>Responses</b><span>DA / EN free text</span></li>
-        <li><span class="k">02</span><b>Token-aware chunking</b><span>fits each model's context</span></li>
-        <li><span class="k">03</span><b>Map</b><span>local LLM summarises each chunk</span></li>
-        <li><span class="k">04</span><b>Reduce</b><span>token-aware merge of summaries</span></li>
-        <li><span class="k">05</span><b>JSON report</b><span>validated, stored per entity</span></li>
-      </ol>
-      <ul class="decisions">
-        <li><b>RAG over fine-tuning</b>, then dropped the vector store once semantic search turned out not to be needed.</li>
-        <li><b>Token budgets</b>: capped output with max_tokens, prompt-level length targets, and retries on finish_reason.</li>
-        <li><b>Model choice</b>: Gemma 3 27B, then Qwen3.5-35B-A3B (MoE, 4-bit) for speed on the same hardware.</li>
-      </ul>
-    </article>
-  </section>
-
   <section id="work" aria-labelledby="work-h">
     <div class="head"><h2 id="work-h">Selected work</h2><span class="eyebrow">7 projects</span></div>
 
@@ -322,6 +304,23 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
         <div class="fig"><strong>190+</strong><span>evaluations at a single school</span></div>
         <div class="fig"><strong>3,000+</strong><span>student responses at that school</span></div>
         <div class="fig"><strong>4</strong><span>competing suppliers beaten in a vendor comparison</span></div>
+      </div>
+      <div class="engine" aria-labelledby="engine-h">
+        <div class="engine-head"><span class="eyebrow">Next layer · AI</span><span class="chip design">Architecture designed</span></div>
+        <h4 id="engine-h">LLM report engine: 100K+ evaluations into written reports</h4>
+        <p>The dashboards show the numbers; the next layer writes the story behind them. Schools generate a huge volume of free-text feedback in Danish and English, so I designed a pipeline that turns it into written reports per evaluation, teacher, school and comparison, <b>self-hosted on open models</b> so student data stays private.</p>
+        <ol class="flow" aria-label="Pipeline stages">
+          <li><span class="k">01</span><b>Responses</b><span>DA / EN free text</span></li>
+          <li><span class="k">02</span><b>Token-aware chunking</b><span>fits each model's context</span></li>
+          <li><span class="k">03</span><b>Map</b><span>local LLM summarises each chunk</span></li>
+          <li><span class="k">04</span><b>Reduce</b><span>token-aware merge of summaries</span></li>
+          <li><span class="k">05</span><b>JSON report</b><span>validated, stored per entity</span></li>
+        </ol>
+        <ul class="decisions">
+          <li><b>RAG over fine-tuning</b>, then dropped the vector store once semantic search turned out not to be needed.</li>
+          <li><b>Token budgets</b>: capped output with max_tokens, prompt-level length targets, and retries on finish_reason.</li>
+          <li><b>Model choice</b>: Gemma 3 27B, then Qwen3.5-35B-A3B (MoE, 4-bit) for speed on the same hardware.</li>
+        </ul>
       </div>
       <div class="foot"><ul class="tags"><li>Laravel</li><li>Livewire</li><li>Alpine.js</li><li>TailwindCSS</li><li>MySQL</li><li>Queues</li><li>Pest</li><li>Forge</li></ul><a href="https://opinoma.com" target="_blank" rel="noopener">opinoma.com ↗</a></div>
     </article>
