@@ -129,6 +129,11 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
 .proj .body .foot{margin-top:auto;padding-top:6px}
 .proj h3{font-size:20px;font-weight:700}
 .proj p{margin:0;color:var(--muted);font-size:15px}
+.proj.wide{grid-column:1/-1;flex-direction:row;align-items:stretch}
+.proj.wide .body{padding:6px}
+.phones{display:flex;gap:10px;margin:0;flex:0 0 auto}
+.phones img{display:block;height:300px;width:auto;border-radius:14px;border:1px solid var(--line);background:var(--bg)}
+@media (max-width:760px){ .proj.wide{flex-direction:column} .phones{overflow-x:auto} .phones img{height:240px} }
 .kind{font-family:var(--mono);font-size:12px;color:var(--muted)}
 @media (max-width:600px){ .grid{grid-template-columns:1fr} }
 
@@ -385,14 +390,15 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
           <div class="foot"><ul class="tags"><li>WordPress</li><li>Roles</li><li>Push</li></ul><a href="https://www.ifmsa-egypt.org.eg" target="_blank" rel="noopener">ifmsa-egypt.org.eg ↗</a></div>
         </div>
       </article>
+      <article class="proj wide">
+        <div class="body">
+          <span class="kind">Ionic mobile app · IT Wolf Solutions</span>
+          <h3>Saydality</h3>
+          <p>A medicine-ordering app for patients and the pharmacies that serve them. Patients find a medicine by name or by sending a photo of their prescription, and the request goes to the nearest pharmacy, located by GPS, for home delivery. A companion app lets pharmacies, including chains, receive orders and set the total cost and delivery fee.</p>
+          <div class="foot"><ul class="tags"><li>Ionic</li><li>REST API</li><li>Geolocation</li><li>Android</li></ul><a href="https://saydality.com" target="_blank" rel="noopener">saydality.com ↗</a></div>
+        </div>
+      </article>
     </div>
-
-    <ul class="ledger" aria-label="Also built">
-      <li>
-        <h3>Saydality</h3><span class="kind">Ionic mobile app</span>
-        <p>Customers search for a medicine and get it delivered from the nearest pharmacy.</p>
-      </li>
-    </ul>
   </section>
 
   <section aria-labelledby="exp-h">
