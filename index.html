@@ -360,6 +360,17 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
   .how .pillar h3{padding-top:0;align-self:center;font-size:17.5px}
   .how .pillar p{grid-column:1/-1;padding-top:0}
 }
+
+/* ===== How I work: bento cards ===== */
+.bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.bx{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:14px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.bx-wide{grid-column:1 / -1}
+.bk{font:12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.bx h3{margin:0;font-size:20px;line-height:1.25}
+.bx p{margin:0;color:var(--muted);font-size:15px;line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
+.chips li{font:12px/1.4 var(--mono);padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+@media (max-width:760px){ .bento{grid-template-columns:1fr} }
 </style>
 
 </head>
@@ -387,10 +398,10 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
 
   <section aria-labelledby="how-h">
     <div class="head"><h2 id="how-h">How I work</h2><span class="eyebrow">what to expect</span></div>
-    <div class="how">
-      <div class="pillar"><div class="ptop"><span class="pico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z"/></svg></span></div><h3>AI in the loop, me in charge</h3><p>I use AI coding tools daily to ship features faster. Every change is covered by tests and reviewed by me before it goes out.</p></div>
-      <div class="pillar"><div class="ptop"><span class="pico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/><path d="M3 17.5l9 5 9-5" opacity=".55"/></svg></span></div><h3>I own it end to end</h3><p>Data model, business logic, UI, tests and deployment. At Opinoma and BullWall I was the engineer responsible for the whole product, not one layer of it.</p></div>
-      <div class="pillar"><div class="ptop"><span class="pico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.8a3.2 3.2 0 0 1 0 6.4M21 20c0-2.6-1.6-4.8-4-5.6"/></svg></span></div><h3>Close to the people deciding</h3><p>I work directly with founders and product owners: the founder at Opinoma, the product owner at BullWall. I turn their business goals into technical decisions and working features.</p></div>
+    <div class="bento">
+      <div class="bx"><span class="bk">AI in the loop</span><h3>AI writes. I decide.</h3><p>AI coding tools every day; every change tested and reviewed by me.</p></div>
+      <div class="bx"><span class="bk">End to end</span><h3>The whole product</h3><ul class="chips"><li>Data</li><li>Logic</li><li>UI</li><li>Tests</li><li>Deploy</li></ul></div>
+      <div class="bx bx-wide"><span class="bk">Close to the people deciding</span><h3>Straight from founders and product owners</h3><ul class="chips"><li>Founder · Opinoma</li><li>Product owner · BullWall</li></ul></div>
     </div>
     <figure class="term" aria-label="Illustrative Claude Code session">
       <div class="term-bar"><span></span><span></span><span></span><em>claude — ~/app</em></div>
