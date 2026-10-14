@@ -371,6 +371,44 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
 .chips li{font:12px/1.4 var(--mono);padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 @media (max-width:760px){ .bento{grid-template-columns:1fr} }
+
+/* ===== Architecture diagrams ===== */
+.arch{margin:0;padding:18px 18px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);display:flex;flex-direction:column;gap:14px}
+.arch figcaption{margin:0}
+.ag{display:grid;grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) 36px minmax(0,1fr) 36px minmax(0,1fr);grid-template-rows:auto 26px auto;align-items:stretch}
+.arch-bw .ag{grid-template-columns:minmax(0,1fr) 36px minmax(0,1fr) 36px minmax(0,1fr)}
+.an{display:flex;flex-direction:column;gap:3px;padding:11px 13px;border-radius:10px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.an b{font-family:var(--display);font-size:14.5px;font-weight:700;line-height:1.2}
+.an span{font-size:12px;color:var(--muted);line-height:1.35}
+.an.core{border-color:var(--accent);background:var(--accent-soft)} .an.core b{color:var(--accent)}
+.an.sub{border-style:dashed}
+.c1{grid-column:1;grid-row:1}.c2{grid-column:2;grid-row:1}.c3{grid-column:3;grid-row:1}.c4{grid-column:4;grid-row:1}.c5{grid-column:5;grid-row:1}.c6{grid-column:6;grid-row:1}.c7{grid-column:7;grid-row:1}
+.c3r{grid-column:3;grid-row:2}.c5r{grid-column:5;grid-row:2}.c3b{grid-column:3;grid-row:3}.c5b{grid-column:5;grid-row:3}
+.al,.av{position:relative;overflow:hidden}
+.al::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:2px;margin-top:-1px;background:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.av::before{content:"";position:absolute;top:2px;bottom:2px;left:50%;width:2px;margin-left:-1px;background:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.al i,.av i{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.al i{top:50%;margin-top:-3px;left:0;animation:flowx 1.8s linear infinite}
+.av i{left:50%;margin-left:-3px;top:0;animation:flowy 1.4s linear infinite}
+.c4 i{animation-delay:.6s}.c6 i{animation-delay:1.2s}.c5r i{animation-delay:.7s}
+@keyframes flowx{0%{left:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{left:calc(100% - 6px);opacity:0}}
+@keyframes flowy{0%{top:0;opacity:0}20%{opacity:1}80%{opacity:1}100%{top:calc(100% - 6px);opacity:0}}
+.afoot{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.migrate .arrow svg path{stroke-dasharray:6 5;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-11}}
+@media (prefers-reduced-motion:reduce){ .al i,.av i{display:none} .migrate .arrow svg path{animation:none;stroke-dasharray:none} }
+@media (max-width:760px){
+  .ag,.arch-bw .ag{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:auto}
+  .ag > *{grid-column:1!important;grid-row:auto!important}
+  .ag .al{height:22px}
+  .ag .al::before{left:50%;right:auto;top:2px;bottom:2px;width:2px;height:auto;margin:0 0 0 -1px}
+  .ag .al i{left:50%;margin-left:-3px;top:0;animation-name:flowy}
+  .ag .av{display:none}
+  .ag .an.sub{margin:8px 0 0 22px}
+  .arch-op .c1{order:1}.arch-op .c2{order:2}.arch-op .c3{order:3}.arch-op .c3b{order:4}.arch-op .c4{order:5}.arch-op .c5{order:6}.arch-op .c5b{order:7}.arch-op .c6{order:8}.arch-op .c7{order:9}
+  .arch-bw .c1{order:1}.arch-bw .c2{order:2}.arch-bw .c3{order:3}.arch-bw .c3b{order:4}.arch-bw .c4{order:5}.arch-bw .c5{order:6}
+  .ag{display:flex;flex-direction:column}
+}
 </style>
 
 </head>
@@ -434,6 +472,11 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
       <h3>Educational evaluation SaaS for Danish schools</h3>
       <p>A GDPR-compliant platform for collecting and analysing evaluation feedback, used by Danish schools, vocational colleges and a municipality. I built and own the core engine: data model, business logic, UI, testing and deployment. The hardest part was making questions and questionnaires <b>fully dynamic</b> while keeping the data consistent enough to compare results over time.</p>
       <p>It covers customizable questionnaires, benchmarking and real-time reporting dashboards. Heavy workloads run on Laravel queues, third-party API integrations handle failures and retries, and the multi-tenant codebase is covered by unit and feature tests in CI.</p>
+      <figure class="arch arch-op" aria-label="Opinoma architecture: schools, colleges and a municipality use a multi-tenant Laravel app; heavy work runs on queues; data in MySQL; third-party APIs with retries; results in reporting dashboards">
+        <figcaption class="eyebrow">How it fits together</figcaption>
+        <div class="ag"><div class="an c1"><b>Schools &amp; a municipality</b><span>each one a tenant</span></div><div class="al c2" aria-hidden="true"><i></i></div><div class="an c3 core"><b>Laravel app</b><span>multi-tenant · RBAC · GDPR</span></div><div class="al c4" aria-hidden="true"><i></i></div><div class="an c5"><b>Queues &amp; jobs</b><span>heavy workloads</span></div><div class="al c6" aria-hidden="true"><i></i></div><div class="an c7"><b>Dashboards</b><span>reports &amp; benchmarking</span></div><div class="av c3r" aria-hidden="true"><i></i></div><div class="av c5r" aria-hidden="true"><i></i></div><div class="an c3b sub"><b>MySQL</b><span>tuned queries &amp; indexes</span></div><div class="an c5b sub"><b>Third-party APIs</b><span>failures retried</span></div></div>
+        <div class="afoot">Tested in CI with PHPUnit &amp; Pest · deployed with Laravel Forge</div>
+      </figure>
       <div class="figures">
         <div class="fig"><strong>190+</strong><span>evaluations at a single school</span></div>
         <div class="fig"><strong>3,000+</strong><span>student responses at that school</span></div>
@@ -475,6 +518,10 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
           <span class="note">New database · queues, jobs, notifications</span>
         </div>
       </div>
+      <figure class="arch arch-bw" aria-label="BullWall CRM architecture after the rebuild: Vue.js and TypeScript frontend, Laravel backend, new MySQL database, with Zoho and Google Maps integrations">
+        <figcaption class="eyebrow">After the rebuild</figcaption>
+        <div class="ag"><div class="an c1"><b>Vue.js + TypeScript</b><span>CRM interface</span></div><div class="al c2" aria-hidden="true"><i></i></div><div class="an c3 core"><b>Laravel</b><span>leads · deals · reporting</span></div><div class="al c4" aria-hidden="true"><i></i></div><div class="an c5"><b>MySQL</b><span>new database schema</span></div><div class="av c3r" aria-hidden="true"><i></i></div><div class="an c3b sub"><b>Zoho · Google Maps</b><span>integrations</span></div></div>
+      </figure>
       <ul class="modules" aria-label="CRM modules">
         <li><b>Leads</b><span>capture &amp; qualify</span></li>
         <li><b>Opportunities</b><span>pipeline tracking</span></li>
