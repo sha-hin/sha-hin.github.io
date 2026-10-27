@@ -414,6 +414,16 @@ footer{font-family:var(--mono);font-size:12px;color:var(--muted)}
 .cmdk-item .ci{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);flex:none;font:13px var(--mono)}
 .cmdk-item .cs{margin-left:auto;font:12px var(--mono);color:var(--muted)}
 .cmdk-item[aria-selected="true"]{background:var(--accent-soft)}
+.cmdk-item .cacts{display:none;gap:6px;margin-left:auto}
+.cmdk-item.has-acts[aria-selected="true"] .cacts{display:flex}
+.cmdk-item.has-acts[aria-selected="true"] .cs{display:none}
+.cmdk-item.flash .cacts{display:none}.cmdk-item.flash .cs{display:inline!important;color:var(--ok)}
+.cact{display:inline-flex;align-items:center;gap:10px;height:32px;padding:0 6px 0 12px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:600 13px var(--body);cursor:pointer}
+.cact:hover{border-color:var(--accent);color:var(--accent)}
+.cact:last-child{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.cact:last-child:hover{color:var(--bg);background:color-mix(in srgb,var(--accent) 85%,var(--fg))}
+.cact .ckeys{display:inline-flex;gap:3px}
+.cact kbd{min-width:20px;height:20px;display:inline-grid;place-items:center;padding:0 5px;border-radius:5px;border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-bottom-width:2px;background:color-mix(in srgb,currentColor 8%,transparent);color:inherit;font:600 12px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
 .cmdk-item[aria-selected="true"] .ci{background:var(--accent);color:var(--bg)}
 .cmdk-empty{padding:18px 12px;color:var(--muted);font-size:14px}
 @media (prefers-reduced-motion:no-preference){ .cmdk:not([hidden]) .cmdk-panel{animation:cmdkin .16s ease-out} @keyframes cmdkin{from{opacity:0;transform:translateY(-6px) scale(.985)}} }
@@ -925,7 +935,10 @@ document.querySelectorAll('[data-copy]').forEach(function(btn){
     {g:"Go to",t:"Experience",i:"→",run:go("#exp-h")},
     {g:"Go to",t:"Stack",i:"→",run:go("#stack-h")},
     {g:"Go to",t:"Contact",i:"→",run:go("#contact-h"),ct:1},
-    {g:"Actions",t:"Copy email address",i:"@",ct:1,keep:1,run:function(it,row){ var done=function(){ row.querySelector(".cs").textContent="Copied ✓"; setTimeout(close,700); }; try{ navigator.clipboard.writeText("mohammed.shahin@live.com").then(done,done); }catch(e){ done(); } if(window.umami) umami.track("Copy email"); }},
+    {g:"Actions",t:"Email",s:"mohammed.shahin@live.com",kw:"copy send mail contact address",i:"@",ct:1,keep:1,
+     acts:[{l:"Copy",k:["\u21b5"],run:function(it,row){ var done=function(){ row.querySelector(".cs").textContent="Copied \u2713"; row.classList.add("flash"); setTimeout(close,800); }; try{ navigator.clipboard.writeText("mohammed.shahin@live.com").then(done,done); }catch(e){ done(); } if(window.umami) umami.track("Copy email"); }},
+           {l:"Send",k:(/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent)?["\u2318","\u21b5"]:["Ctrl","\u21b5"]),run:function(){ if(window.umami) umami.track("Send email"); close(); setTimeout(function(){ location.href="mailto:mohammed.shahin@live.com"; },20); }}],
+     run:function(it,row){ it.acts[0].run(it,row); }},
     {g:"Actions",t:"Open LinkedIn",i:"in",ct:1,run:function(){ if(window.umami) umami.track("Open LinkedIn"); window.open("https://linkedin.com/in/sr-mohamed-shahin","_blank","noopener"); }},
     {g:"Actions",t:"Switch light / dark theme",i:"◐",run:function(){ var b=document.querySelector(".theme-toggle"); if(b) b.click(); }}
   ];
@@ -935,11 +948,12 @@ document.querySelectorAll('[data-copy]').forEach(function(btn){
     var grp=null;
     items.forEach(function(it){
       if(it.ct && noCt()) return;
-      if(q && (it.t+" "+(it.s||"")+" "+it.g).toLowerCase().indexOf(q)<0) return;
+      if(q && (it.t+" "+(it.s||"")+" "+(it.kw||"")+" "+it.g).toLowerCase().indexOf(q)<0) return;
       if(it.g!==grp){ grp=it.g; var h=document.createElement("li"); h.className="cmdk-grp"; h.setAttribute("role","presentation"); h.textContent=grp; list.appendChild(h); }
       var li=document.createElement("li"); li.className="cmdk-item"; li.setAttribute("role","option");
       li.innerHTML='<span class="ci"></span><span class="ct"></span><span class="cs"></span>';
       li.querySelector(".ci").textContent=it.i; li.querySelector(".ct").textContent=it.t; li.querySelector(".cs").textContent=it.s||"";
+      if(it.acts){ var box=document.createElement("span"); box.className="cacts"; it.acts.forEach(function(a){ var b=document.createElement("button"); b.type="button"; b.className="cact"; var lb=document.createElement("span"); lb.textContent=a.l; b.appendChild(lb); var ks=document.createElement("span"); ks.className="ckeys"; a.k.forEach(function(t){ var kb=document.createElement("kbd"); kb.textContent=t; ks.appendChild(kb); }); b.appendChild(ks); b.addEventListener("click",function(ev){ ev.stopPropagation(); a.run(it,li); }); box.appendChild(b); }); li.appendChild(box); li.classList.add("has-acts"); }
       var idx=shown.length; li.addEventListener("mousemove",function(){ if(sel!==idx){ sel=idx; mark(); } });
       li.addEventListener("click",function(){ sel=idx; run(); });
       shown.push({it:it,el:li}); list.appendChild(li);
@@ -956,7 +970,7 @@ document.querySelectorAll('[data-copy]').forEach(function(btn){
   wrap.addEventListener("keydown",function(e){
     if(e.key==="ArrowDown"){ e.preventDefault(); if(shown.length){ sel=(sel+1)%shown.length; mark(); } }
     else if(e.key==="ArrowUp"){ e.preventDefault(); if(shown.length){ sel=(sel-1+shown.length)%shown.length; mark(); } }
-    else if(e.key==="Enter"){ e.preventDefault(); run(); }
+    else if(e.key==="Enter"){ e.preventDefault(); var x=shown[sel]; if((e.metaKey||e.ctrlKey) && x && x.it.acts && x.it.acts[1]){ x.it.acts[1].run(x.it,x.el); } else { run(); } }
     else if(e.key==="Escape"){ e.preventDefault(); close(); }
     else if(e.key==="Tab"){ e.preventDefault(); input.focus(); }
   });
